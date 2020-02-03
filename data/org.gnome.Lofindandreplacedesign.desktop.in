@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=lofindandreplacedesign
+Exec=lofindandreplacedesign
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

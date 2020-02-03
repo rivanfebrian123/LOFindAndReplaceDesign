@@ -1,0 +1,5 @@
+data/org.gnome.Lofindandreplacedesign.desktop.in
+data/org.gnome.Lofindandreplacedesign.appdata.xml.in
+data/org.gnome.Lofindandreplacedesign.gschema.xml
+src/window.uisrc/main.py
+src/window.py
