@@ -857,7 +857,7 @@ Author: Muhammad Rivan Febrian
             <child>
               <object class="GtkRadioButton" id="rdbtn_fnr">
                 <property name="label" translatable="yes">Basic</property>
-                <property name="name">basic_mode</property>
+                <property name="name">basic-mode</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -874,7 +874,7 @@ Author: Muhammad Rivan Febrian
             <child>
               <object class="GtkRadioButton" id="rdbtn_find">
                 <property name="label" translatable="yes">Advanced</property>
-                <property name="name">advanced_mode</property>
+                <property name="name">advanced-mode</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -1125,7 +1125,6 @@ Author: Muhammad Rivan Febrian
                         <property name="primary_icon_activatable">False</property>
                         <property name="primary_icon_sensitive">False</property>
                         <property name="completion">entcmplt_replace_with</property>
-                        <signal name="changed" handler="on_srchent_replace_with_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>

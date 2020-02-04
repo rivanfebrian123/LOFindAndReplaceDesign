@@ -71,7 +71,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
         self.parent = self.get_transient_for()
         self.parent.textbuffer_buffer.connect(
-            "mark-set", self.on_parent_textbuffer_mark_set)  # FIXME
+            "mark-set", self.on_parent_textbuffer_mark_set)
 
         # We've to set these properties manually because GtkTemplate
         # doesn't do it well. Keep them alphabeticaly sorted
@@ -89,8 +89,8 @@ class FindAndReplaceWindow(Gtk.Window):
 
     def set_advanced_mode(self, value):
         self.rvlr_options.set_reveal_child(value)
-        self.refresh_replace_mode_integration()  # FIXME
-        # save the value
+        self.refresh_replace_mode_integration()
+        # Save the value
         self._advanced_mode = value
 
     # Replace Mode property
@@ -108,8 +108,9 @@ class FindAndReplaceWindow(Gtk.Window):
         else:
             stylectx.remove_class("destructive-action")
             widget.set_label("Find All")
-
-        # save the value
+        self.refresh_match_integration()
+        self.refresh_replace_mode_integration()
+        # Save the value
         self._replace_mode = value
 
     #---------------------------------------------
@@ -272,4 +273,9 @@ class FindAndReplaceWindow(Gtk.Window):
         self.refresh_match_integration()
 
     @GtkTemplate.Callback
-    def on#FIXME
+    def on_rdbtn_option_mode_toggled(self, widget):
+        self.set_advanced_mode(widget.get_name() == "advanced-mode")
+
+    @GtkTemplate.Callback
+    def on_srchent_existing_text_changed(self, widget):
+        self.refresh_match_integration()
