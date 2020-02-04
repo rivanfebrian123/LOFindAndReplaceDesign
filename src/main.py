@@ -22,7 +22,7 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import Gtk, Gio
 
-from .window import LofindandreplacedesignWindow
+from .main_window import MainWindow
 
 
 class Application(Gtk.Application):
@@ -33,7 +33,7 @@ class Application(Gtk.Application):
     def do_activate(self):
         win = self.props.active_window
         if not win:
-            win = LofindandreplacedesignWindow(application=self)
+            win = MainWindow(application=self)
         win.present()
 
 

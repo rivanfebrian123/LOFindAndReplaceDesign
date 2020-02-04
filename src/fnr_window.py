@@ -56,7 +56,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
     # Null objects. Keep them alphabeticaly sorted
     parent = Gtk.ApplicationWindow()
-    whole_word_last_active = false
+    whole_word_last_active = False
 
     # Properties' storage. Keep them alphabeticaly sorted
     _replace_mode = True
@@ -88,10 +88,12 @@ class FindAndReplaceWindow(Gtk.Window):
         return self._advanced_mode
 
     def set_advanced_mode(self, value):
+        # Save the value first
+        self._advanced_mode = value
+
+        # Refresh the integrations
         self.rvlr_options.set_reveal_child(value)
         self.refresh_replace_mode_integration()
-        # Save the value
-        self._advanced_mode = value
 
     # Replace Mode property
     def get_replace_mode(self):
@@ -101,6 +103,10 @@ class FindAndReplaceWindow(Gtk.Window):
         widget = self.btn_find_or_replace_all
         stylectx = widget.get_style_context()
 
+        # Save the value first
+        self._replace_mode = value
+
+        # Refresh the integrations
         self.rvlr_replace_with.set_reveal_child(value)
         if value:
             stylectx.add_class("destructive-action")
@@ -110,24 +116,23 @@ class FindAndReplaceWindow(Gtk.Window):
             widget.set_label("Find All")
         self.refresh_match_integration()
         self.refresh_replace_mode_integration()
-        # Save the value
-        self._replace_mode = value
 
     #---------------------------------------------
     # Integration refreshment functions / procedures. Keep them
     # alphabeticaly sorted
     #
     def refresh_match_integration(self):
-        matching = self.match_parent_selected_text()[0]
+        matching, keyword = self.match_parent_selected_text()[0:2]
         widget = self.stk_find_or_replace
 
+        widget.set_sensitive(keyword != "")
         if matching:
             if self.get_replace_mode():
-                widget.set_visible_child_name("replace-act")
+                widget.set_visible_child_name("replace_act")
             else:
-                widget.set_visible_child_name("main-act")
+                widget.set_visible_child_name("main_act")
         else:
-            widget.set_visible_child_name("main-act")
+            widget.set_visible_child_name("main_act")
 
     def refresh_replace_mode_integration(self):
         active = self.get_replace_mode()
@@ -143,7 +148,7 @@ class FindAndReplaceWindow(Gtk.Window):
     #
     def find_and_select(self, direction):
         selected_text_matching, keyword, _buffer, selection_bounds = \
-            match_parent_selected_text()
+            self.match_parent_selected_text()
         search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
         cursor_iter = Gtk.TextIter()
         found = False
@@ -154,7 +159,7 @@ class FindAndReplaceWindow(Gtk.Window):
         if selected_text_matching:
             if direction == Direction.FORWARD:
                 cursor_iter = selection_bounds[1]
-            elif direction = Direction.FORWARD:
+            elif direction == Direction.BACKWARD:
                 cursor_iter = selection_bounds[0]
         else:
             cursor_iter = _buffer.get_iter_at_mark(_buffer.get_insert())
@@ -175,9 +180,9 @@ class FindAndReplaceWindow(Gtk.Window):
                 found = True
                 if x == 1:
                     icon = "dialog-information-symbolic"
-                    if direction = Direction.FORWARD:
+                    if direction == Direction.FORWARD:
                         label = "Reached the end of the document"
-                    elif direction = Direction.BACKWARD:
+                    elif direction == Direction.BACKWARD:
                         label = "Reached the beginning of the document"
                 break
 
@@ -224,17 +229,16 @@ class FindAndReplaceWindow(Gtk.Window):
 
     @GtkTemplate.Callback
     def on_btn_replace_clicked(self, widget):
-        matching, keyword, _buffer, selection_bounds = \
-            match_parent_selected_text()
+        matching, x, _buffer, y = self.match_parent_selected_text()
 
         if matching:
             _buffer.delete_selection(False, False)
-            _buffer.insert_at_cursor(keyword, -1)
-        self.stk_find_or_replace.set_visible_child_name("main-act")
+            _buffer.insert_at_cursor(self.srchent_replace_with.get_text(), -1)
+        self.stk_find_or_replace.set_visible_child_name("main_act")
 
     @GtkTemplate.Callback
     def on_btn_skip_clicked(self, widget):
-        self.stk_find_or_replace.set_visible_child_name("main-act")
+        self.stk_find_or_replace.set_visible_child_name("main_act")
 
     @GtkTemplate.Callback
     def on_chkbtn_sound_like_toggled(self, widget):
@@ -273,8 +277,8 @@ class FindAndReplaceWindow(Gtk.Window):
         self.refresh_match_integration()
 
     @GtkTemplate.Callback
-    def on_rdbtn_option_mode_toggled(self, widget):
-        self.set_advanced_mode(widget.get_name() == "advanced-mode")
+    def on_rdbtn_options_mode_toggled(self, widget):
+        self.set_advanced_mode(widget.get_name() == "advanced_mode")
 
     @GtkTemplate.Callback
     def on_srchent_existing_text_changed(self, widget):

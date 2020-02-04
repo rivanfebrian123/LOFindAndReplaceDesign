@@ -857,7 +857,7 @@ Author: Muhammad Rivan Febrian
             <child>
               <object class="GtkRadioButton" id="rdbtn_fnr">
                 <property name="label" translatable="yes">Basic</property>
-                <property name="name">basic-mode</property>
+                <property name="name">basic_mode</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -874,7 +874,7 @@ Author: Muhammad Rivan Febrian
             <child>
               <object class="GtkRadioButton" id="rdbtn_find">
                 <property name="label" translatable="yes">Advanced</property>
-                <property name="name">advanced-mode</property>
+                <property name="name">advanced_mode</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -988,7 +988,7 @@ Author: Muhammad Rivan Febrian
                     </child>
                   </object>
                   <packing>
-                    <property name="name">main-act</property>
+                    <property name="name">main_act</property>
                     <property name="title" translatable="yes">page0</property>
                   </packing>
                 </child>
@@ -1032,7 +1032,7 @@ Author: Muhammad Rivan Febrian
                     </child>
                   </object>
                   <packing>
-                    <property name="name">replace-act</property>
+                    <property name="name">replace_act</property>
                     <property name="title" translatable="yes">page1</property>
                     <property name="position">1</property>
                   </packing>
