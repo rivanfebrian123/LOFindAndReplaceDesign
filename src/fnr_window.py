@@ -69,6 +69,7 @@ class FindAndReplaceWindow(Gtk.Window):
         super().__init__(**kwargs)
         self.init_template()
 
+        # Set null variables
         self.parent = self.get_transient_for()
         self.parent.textbuffer_buffer.connect(
             "mark-set", self.on_parent_textbuffer_mark_set)
@@ -79,6 +80,12 @@ class FindAndReplaceWindow(Gtk.Window):
         self.menubtn_find_or_replace_styles.set_sensitive(False)
         self.menubtn_sound_like.set_sensitive(False)
         self.menubtn_use_similarity_srch.set_sensitive(False)
+
+        # Init widgets
+        parent_selected_text = self.match_parent_selected_text()[2]
+
+        if parent_selected_text:
+            self.srchent_existing_text.set_text(parent_selected_text)
 
     #-----------------------------------
     # Properties. Keep them alphabeticaly sorted
@@ -146,7 +153,7 @@ class FindAndReplaceWindow(Gtk.Window):
     # Other functions / procedures. Keep them alphabeticaly sorted
     #
     def find_and_select(self, direction):
-        selected_text_matching, keyword, _buffer, selection_bounds = \
+        selected_text_matching, keyword, x, _buffer, selection_bounds = \
             self.match_parent_selected_text()
         search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
         cursor_iter = Gtk.TextIter()
@@ -200,16 +207,18 @@ class FindAndReplaceWindow(Gtk.Window):
     def match_parent_selected_text(self):
         _buffer = self.parent.textbuffer_buffer
         selection_bounds = _buffer.get_selection_bounds()
+        selected_text = ""
         keyword = self.srchent_existing_text.get_text()
         matching = False
 
-        # Make sure that the keyword is not a null object, and compare it
-        # with the selected text
-        if selection_bounds and keyword:
-            if _buffer.get_text(*selection_bounds, True) == keyword:
+        if selection_bounds:
+            selected_text = _buffer.get_text(*selection_bounds, True)
+            # Make sure that the keyword is not a null object, and compare it
+            # with the selected text
+            if keyword and selected_text == keyword:
                 matching = True
 
-        return matching, keyword, _buffer, selection_bounds
+        return matching, keyword, selected_text, _buffer, selection_bounds
 
     #--------------------------------------
     # Callbacks functions / procedures. Keep them alphabeticaly sorted
@@ -228,7 +237,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
     @GtkTemplate.Callback
     def on_btn_replace_clicked(self, widget):
-        matching, x, _buffer, y = self.match_parent_selected_text()
+        matching, x, y, _buffer, z = self.match_parent_selected_text()
 
         if matching:
             _buffer.delete_selection(False, False)
@@ -255,7 +264,7 @@ class FindAndReplaceWindow(Gtk.Window):
             self.whole_word_last_active = self.chkbtn_whole_word.get_active()
             self.chkbtn_whole_word.set_active(False)
         else:
-            self.chkbtn_whole_word.set_active(whole_word_last_active)
+            self.chkbtn_whole_word.set_active(self.whole_word_last_active)
 
     @GtkTemplate.Callback
     def on_chkbtn_use_similarity_srch_toggled(self, widget):
