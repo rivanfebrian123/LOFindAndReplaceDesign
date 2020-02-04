@@ -271,5 +271,5 @@ class FindAndReplaceWindow(Gtk.Window):
     def on_parent_textbuffer_mark_set(self, location, mark, widget):
         self.refresh_match_integration()
 
-    #@GtkTemplate.Callback
-    # def #FIXME
+    @GtkTemplate.Callback
+    def on#FIXME
