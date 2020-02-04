@@ -20,10 +20,12 @@
 from gi.repository import Gtk
 from .gi_composites import GtkTemplate
 
+
 class Direction():
     FORWARD = 0
     BACKWARD = 1
     WHOLE_DOCUMENT = 2
+
 
 @GtkTemplate(ui='/org/gnome/Lofindandreplacedesign/fnr_window.ui')
 class FindAndReplaceWindow(Gtk.Window):
@@ -60,8 +62,7 @@ class FindAndReplaceWindow(Gtk.Window):
     _replace_mode = True
     _advanced_mode = False
 
-
-    #
+    #---------------------------------
     # The init function
     #
     def __init__(self, **kwargs):
@@ -70,7 +71,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
         self.parent = self.get_transient_for()
         self.parent.textbuffer_buffer.connect(
-            "mark-set", self.on_parent_textbuffer_mark_set) #FIXME
+            "mark-set", self.on_parent_textbuffer_mark_set)  # FIXME
 
         # We've to set these properties manually because GtkTemplate
         # doesn't do it well. Keep them alphabeticaly sorted
@@ -79,20 +80,20 @@ class FindAndReplaceWindow(Gtk.Window):
         self.menubtn_sound_like.set_sensitive(False)
         self.menubtn_use_similarity_srch.set_sensitive(False)
 
+    #-----------------------------------
+    # Properties. Keep them alphabeticaly sorted
     #
-    # Properties
-    #
-    #### Advanced Mode property
+    # Advanced Mode property
     def get_advanced_mode(self):
         return self._advanced_mode
 
     def set_advanced_mode(self, value):
         self.rvlr_options.set_reveal_child(value)
-        self.refresh_replace_mode_integration() #FIXME
+        self.refresh_replace_mode_integration()  # FIXME
         # save the value
         self._advanced_mode = value
 
-    #### Replace Mode property
+    # Replace Mode property
     def get_replace_mode(self):
         return self._replace_mode
 
@@ -107,11 +108,13 @@ class FindAndReplaceWindow(Gtk.Window):
         else:
             stylectx.remove_class("destructive-action")
             widget.set_label("Find All")
+
         # save the value
         self._replace_mode = value
 
-    #
-    # Integration refreshment functions / procedures
+    #---------------------------------------------
+    # Integration refreshment functions / procedures. Keep them
+    # alphabeticaly sorted
     #
     def refresh_match_integration(self):
         matching = self.match_parent_selected_text()[0]
@@ -134,27 +137,11 @@ class FindAndReplaceWindow(Gtk.Window):
         else:
             widget.set_reveal_child(False)
 
+    #-----------------------------------
+    # Other functions / procedures. Keep them alphabeticaly sorted
     #
-    # Other functions / procedures
-    #
-    def match_parent_selected_text(self):
-        _buffer = self.parent.textbuffer_buffer
-        selection_bounds = _buffer.get_selection_bounds()
-        selected_text = _buffer.get_text(*selection_bounds, True)
-        keyword = self.srchent_existing_text.get_text()
-        matching = False
-
-        # Make sure that keyword is not a null object, and compare it
-        # with the selected text
-        if selection_bounds and keyword and selected_text == keyword:
-            matching = True
-
-        return matching, keyword, _buffer, selection_bounds
-
-    #FIXME
-
     def find_and_select(self, direction):
-        matching, keyword, _buffer, selection_bounds = \
+        selected_text_matching, keyword, _buffer, selection_bounds = \
             match_parent_selected_text()
         search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
         cursor_iter = Gtk.TextIter()
@@ -163,5 +150,126 @@ class FindAndReplaceWindow(Gtk.Window):
         icon = ""
         label = ""
 
+        if selected_text_matching:
+            if direction == Direction.FORWARD:
+                cursor_iter = selection_bounds[1]
+            elif direction = Direction.FORWARD:
+                cursor_iter = selection_bounds[0]
+        else:
+            cursor_iter = _buffer.get_iter_at_mark(_buffer.get_insert())
+
+        for x in range(2):
+            # Search once more from the start or the end of the documents
+            # if nothing matching at first trial
+            if direction == Direction.FORWARD:
+                if x == 1:
+                    cursor_iter = _buffer.get_start_iter()
+                match = cursor_iter.forward_search(*search_options)
+            elif direction == Direction.BACKWARD:
+                if x == 1:
+                    cursor_iter = _buffer.get_end_iter()
+                match = cursor_iter.backward_search(*search_options)
+
+            if match:
+                found = True
+                if x == 1:
+                    icon = "dialog-information-symbolic"
+                    if direction = Direction.FORWARD:
+                        label = "Reached the end of the document"
+                    elif direction = Direction.BACKWARD:
+                        label = "Reached the beginning of the document"
+                break
+
+        if found:
+            _buffer.select_range(*match)
+        else:
+            icon = "dialog-error-symbolic"
+            label = "Search key not found"
+
+        if label:
+            self.lbl_search_notif.set_label(label)
+            self.img_search_notif.set_from_icon_name(
+                icon, Gtk.IconSize.LARGE_TOOLBAR)
+            self.rvlr_search_notif.set_reveal_child(True)
+
+    def match_parent_selected_text(self):
+        _buffer = self.parent.textbuffer_buffer
+        selection_bounds = _buffer.get_selection_bounds()
+        keyword = self.srchent_existing_text.get_text()
+        matching = False
+
+        # Make sure that the keyword is not a null object, and compare it
+        # with the selected text
+        if selection_bounds and keyword:
+            if _buffer.get_text(*selection_bounds, True) == keyword:
+                matching = True
+
+        return matching, keyword, _buffer, selection_bounds
+
+    #--------------------------------------
+    # Callbacks functions / procedures. Keep them alphabeticaly sorted
+    #
+    @GtkTemplate.Callback
+    def on_btn_close_search_notif_clicked(self, widget):
+        self.rvlr_search_notif.set_reveal_child(False)
+
+    @GtkTemplate.Callback
+    def on_btn_find_next_clicked(self, widget):
+        self.find_and_select(Direction.FORWARD)
+
+    @GtkTemplate.Callback
+    def on_btn_find_previous_clicked(self, widget):
+        self.find_and_select(Direction.BACKWARD)
+
+    @GtkTemplate.Callback
+    def on_btn_replace_clicked(self, widget):
+        matching, keyword, _buffer, selection_bounds = \
+            match_parent_selected_text()
+
         if matching:
-            
+            _buffer.delete_selection(False, False)
+            _buffer.insert_at_cursor(keyword, -1)
+        self.stk_find_or_replace.set_visible_child_name("main-act")
+
+    @GtkTemplate.Callback
+    def on_btn_skip_clicked(self, widget):
+        self.stk_find_or_replace.set_visible_child_name("main-act")
+
+    @GtkTemplate.Callback
+    def on_chkbtn_sound_like_toggled(self, widget):
+        self.menubtn_sound_like.set_sensitive(widget.get_active())
+
+    @GtkTemplate.Callback
+    def on_chkbtn_use_regex_toggled(self, widget):
+        active = widget.get_active()
+
+        self.chkbtn_use_similarity_srch.set_sensitive(not active)
+        self.chkbtn_whole_word.set_sensitive(not active)
+        # Make sure chkbtn_whole_word active again after disabled if it was
+        # active before this
+        if active:
+            self.whole_word_last_active = self.chkbtn_whole_word.get_active()
+            self.chkbtn_whole_word.set_active(False)
+        else:
+            self.chkbtn_whole_word.set_active(whole_word_last_active)
+
+    @GtkTemplate.Callback
+    def on_chkbtn_use_similarity_srch_toggled(self, widget):
+        active = widget.get_active()
+
+        self.menubtn_use_similarity_srch.set_sensitive(active)
+        self.chkbtn_use_regex.set_sensitive(not active)
+
+    @GtkTemplate.Callback
+    def on_tglbtn_find_or_replace_styles_toggled(self, widget):
+        self.menubtn_find_or_replace_styles.set_sensitive(widget.get_active())
+
+    @GtkTemplate.Callback
+    def on_tglbtn_replace_toggled(self, widget):
+        self.set_replace_mode(widget.get_active())
+
+    def on_parent_textbuffer_mark_set(self, location, mark, widget):
+        self.refresh_match_integration()
+
+    #@GtkTemplate.Callback
+    # def #FIXME

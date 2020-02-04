@@ -21,6 +21,7 @@ from gi.repository import Gtk
 from .gi_composites import GtkTemplate
 from .fnr_window import FindAndReplaceWindow
 
+
 @GtkTemplate(ui='/org/gnome/Lofindandreplacedesign/main_window.ui')
 class MainWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "MainWindow"
