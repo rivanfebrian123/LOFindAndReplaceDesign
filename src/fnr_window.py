@@ -114,10 +114,10 @@ class FindAndReplaceWindow(Gtk.Window):
     # Integration refreshment functions / procedures
     #
     def refresh_match_integration(self):
-        matched_text, _buffer = self.match_parent_selected_text()[0:2]
+        matching = self.match_parent_selected_text()[0]
         widget = self.stk_find_or_replace
 
-        if matched_text:
+        if matching:
             if self.get_replace_mode():
                 widget.set_visible_child_name("replace-act")
             else:
@@ -142,27 +142,20 @@ class FindAndReplaceWindow(Gtk.Window):
         selection_bounds = _buffer.get_selection_bounds()
         selected_text = _buffer.get_text(*selection_bounds, True)
         keyword = self.srchent_existing_text.get_text()
-        matched_text = None
+        matching = False
 
         # Make sure that keyword is not a null object, and compare it
         # with the selected text
         if selection_bounds and keyword and selected_text == keyword:
-            matched_text = selected_text
-        else:
-            matched_text = None
+            matching = True
 
-        return keyword, matched_text, _buffer, selection_bounds
-
-    def is_parent_selected_text_match(self):
-        match = False
-        if m
+        return matching, keyword, _buffer, selection_bounds
 
     #FIXME
 
     def find_and_select(self, direction):
-        _buffer = self.parent.textbuffer_buffer
-        selection_bounds = _buffer.get_selection_bounds()
-        keyword = self.srchent_existing_text.get_text()
+        matching, keyword, _buffer, selection_bounds = \
+            match_parent_selected_text()
         search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
         cursor_iter = Gtk.TextIter()
         found = False
@@ -170,5 +163,5 @@ class FindAndReplaceWindow(Gtk.Window):
         icon = ""
         label = ""
 
-        if selection_bounds and keyword:
+        if matching:
             
