@@ -135,11 +135,10 @@ class FindAndReplaceWindow(Gtk.Window):
             widget.set_visible_child_name("main_act")
 
     def refresh_replace_mode_integration(self):
-        active = self.get_replace_mode()
         widget = self.rvlr_find_or_replace_styles
 
         if self.get_advanced_mode():
-            widget.set_reveal_child(active)
+            widget.set_reveal_child(self.get_replace_mode())
         else:
             widget.set_reveal_child(False)
 
@@ -251,7 +250,7 @@ class FindAndReplaceWindow(Gtk.Window):
         self.chkbtn_use_similarity_srch.set_sensitive(not active)
         self.chkbtn_whole_word.set_sensitive(not active)
         # Make sure chkbtn_whole_word active again after disabled if it was
-        # active before this
+        # activated before this
         if active:
             self.whole_word_last_active = self.chkbtn_whole_word.get_active()
             self.chkbtn_whole_word.set_active(False)
