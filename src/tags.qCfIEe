@@ -14,11 +14,17 @@ set_ui_path	gi_composites.py	/^    def set_ui_path(*path):$/;"	m	class:_GtkTempl
 __init__	gi_composites.py	/^    def __init__(self, ui):$/;"	m	class:_GtkTemplate
 __call__	gi_composites.py	/^    def __call__(self, cls):$/;"	m	class:_GtkTemplate	file:
 GtkTemplate	gi_composites.py	/^GtkTemplate = _GtkTemplate$/;"	v
-LofindandreplacedesignWindow	window.py	/^class LofindandreplacedesignWindow(Gtk.ApplicationWindow):$/;"	c
-__gtype_name__	window.py	/^    __gtype_name__ = 'LofindandreplacedesignWindow'$/;"	v	class:LofindandreplacedesignWindow
-label	window.py	/^    label = GtkTemplate.Child()$/;"	v	class:LofindandreplacedesignWindow
-__init__	window.py	/^    def __init__(self, **kwargs):$/;"	m	class:LofindandreplacedesignWindow
 Application	main.py	/^class Application(Gtk.Application):$/;"	c
 __init__	main.py	/^    def __init__(self):$/;"	m	class:Application
 do_activate	main.py	/^    def do_activate(self):$/;"	m	class:Application
 main	main.py	/^def main(version):$/;"	f
+Direction	main_window.py	/^class Direction():$/;"	c
+FORWARD	main_window.py	/^    FORWARD = 0$/;"	v	class:Direction
+BACKWARD	main_window.py	/^    BACKWARD = 1$/;"	v	class:Direction
+MainWindow	main_window.py	/^class MainWindow(Gtk.ApplicationWindow):$/;"	c
+__gtype_name__	main_window.py	/^    __gtype_name__ = "MainWindow"$/;"	v	class:MainWindow
+fnr_window	main_window.py	/^    fnr_window = None$/;"	v	class:MainWindow
+btn_find_and_replace	main_window.py	/^    btn_find_and_replace = GtkTemplate.Child()$/;"	v	class:MainWindow
+textview_text	main_window.py	/^    textview_text = GtkTemplate.Child()$/;"	v	class:MainWindow
+textbuffer_buffer	main_window.py	/^    textbuffer_buffer = GtkTemplate.Child()$/;"	v	class:MainWindow
+__init__	main_window.py	/^    def __init__(self,):$/;"	m	class:MainWindow

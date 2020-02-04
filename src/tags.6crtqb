@@ -1,0 +1,38 @@
+__all__	gi_composites.py	/^__all__ = ['GtkTemplate']$/;"	v
+GtkTemplateWarning	gi_composites.py	/^class GtkTemplateWarning(UserWarning):$/;"	c
+_connect_func	gi_composites.py	/^def _connect_func(builder, obj, signal_name, handler_name,$/;"	f
+_register_template	gi_composites.py	/^def _register_template(cls, template_bytes):$/;"	f
+_init_template	gi_composites.py	/^def _init_template(self, cls, base_init_template):$/;"	f
+_Child	gi_composites.py	/^class _Child(object):$/;"	c
+__slots__	gi_composites.py	/^    __slots__ = []$/;"	v	class:_Child
+widgets	gi_composites.py	/^    def widgets(count):$/;"	m	class:_Child
+_GtkTemplate	gi_composites.py	/^class _GtkTemplate(object):$/;"	c
+__ui_path__	gi_composites.py	/^    __ui_path__ = None$/;"	v	class:_GtkTemplate
+Callback	gi_composites.py	/^    def Callback(f):$/;"	m	class:_GtkTemplate
+Child	gi_composites.py	/^    Child = _Child$/;"	v	class:_GtkTemplate
+set_ui_path	gi_composites.py	/^    def set_ui_path(*path):$/;"	m	class:_GtkTemplate
+__init__	gi_composites.py	/^    def __init__(self, ui):$/;"	m	class:_GtkTemplate
+__call__	gi_composites.py	/^    def __call__(self, cls):$/;"	m	class:_GtkTemplate	file:
+GtkTemplate	gi_composites.py	/^GtkTemplate = _GtkTemplate$/;"	v
+Application	main.py	/^class Application(Gtk.Application):$/;"	c
+__init__	main.py	/^    def __init__(self):$/;"	m	class:Application
+do_activate	main.py	/^    def do_activate(self):$/;"	m	class:Application
+main	main.py	/^def main(version):$/;"	f
+Direction	main_window.py	/^class Direction():$/;"	c
+FORWARD	main_window.py	/^    FORWARD = 0$/;"	v	class:Direction
+BACKWARD	main_window.py	/^    BACKWARD = 1$/;"	v	class:Direction
+MainWindow	main_window.py	/^class MainWindow(Gtk.ApplicationWindow):$/;"	c
+__gtype_name__	main_window.py	/^    __gtype_name__ = "MainWindow"$/;"	v	class:MainWindow
+fnr_window	main_window.py	/^    fnr_window = None$/;"	v	class:MainWindow
+btn_find_and_replace	main_window.py	/^    btn_find_and_replace = GtkTemplate.Child()$/;"	v	class:MainWindow
+textview_text	main_window.py	/^    textview_text = GtkTemplate.Child()$/;"	v	class:MainWindow
+textbuffer_buffer	main_window.py	/^    textbuffer_buffer = GtkTemplate.Child()$/;"	v	class:MainWindow
+__init__	main_window.py	/^    def __init__(self, **kwargs):$/;"	m	class:MainWindow
+on_btn_find_and_replace_clicked	main_window.py	/^    def on_btn_find_and_replace_clicked(self, widget):$/;"	m	class:MainWindow
+on_fnr_window_destroy	main_window.py	/^    def on_fnr_window_destroy(self, widget):$/;"	m	class:MainWindow
+Direction	fnr_window.py	/^class Direction():$/;"	c
+FORWARD	fnr_window.py	/^    FORWARD = 0$/;"	v	class:Direction
+BACKWARD	fnr_window.py	/^    BACKWARD = 1$/;"	v	class:Direction
+WHOLE_DOCUMENT	fnr_window.py	/^    WHOLE_DOCUMENT = 2$/;"	v	class:Direction
+FindAndReplaceWindow	fnr_window.py	/^class FindAndReplaceWindow(Gtk.Window):$/;"	c
+__init__	fnr_window.py	/^    def __init__(self, **kwargs):$/;"	m	class:FindAndReplaceWindow

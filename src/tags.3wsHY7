@@ -1,0 +1,20 @@
+__all__	gi_composites.py	/^__all__ = ['GtkTemplate']$/;"	v
+GtkTemplateWarning	gi_composites.py	/^class GtkTemplateWarning(UserWarning):$/;"	c
+_connect_func	gi_composites.py	/^def _connect_func(builder, obj, signal_name, handler_name,$/;"	f
+_register_template	gi_composites.py	/^def _register_template(cls, template_bytes):$/;"	f
+_init_template	gi_composites.py	/^def _init_template(self, cls, base_init_template):$/;"	f
+_Child	gi_composites.py	/^class _Child(object):$/;"	c
+__slots__	gi_composites.py	/^    __slots__ = []$/;"	v	class:_Child
+widgets	gi_composites.py	/^    def widgets(count):$/;"	m	class:_Child
+_GtkTemplate	gi_composites.py	/^class _GtkTemplate(object):$/;"	c
+__ui_path__	gi_composites.py	/^    __ui_path__ = None$/;"	v	class:_GtkTemplate
+Callback	gi_composites.py	/^    def Callback(f):$/;"	m	class:_GtkTemplate
+Child	gi_composites.py	/^    Child = _Child$/;"	v	class:_GtkTemplate
+set_ui_path	gi_composites.py	/^    def set_ui_path(*path):$/;"	m	class:_GtkTemplate
+__init__	gi_composites.py	/^    def __init__(self, ui):$/;"	m	class:_GtkTemplate
+__call__	gi_composites.py	/^    def __call__(self, cls):$/;"	m	class:_GtkTemplate	file:
+GtkTemplate	gi_composites.py	/^GtkTemplate = _GtkTemplate$/;"	v
+Application	main.py	/^class Application(Gtk.Application):$/;"	c
+__init__	main.py	/^    def __init__(self):$/;"	m	class:Application
+do_activate	main.py	/^    def do_activate(self):$/;"	m	class:Application
+main	main.py	/^def main(version):$/;"	f

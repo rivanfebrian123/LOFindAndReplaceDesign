@@ -29,7 +29,8 @@ lofindandreplacedesign_sources = [
   '__init__.py',
   'gi_composites.py',
   'main.py',
-  'window.py',
+  'main_window.py',
+  'fnr_window.py',
 ]
 
 install_data(lofindandreplacedesign_sources, install_dir: moduledir)
