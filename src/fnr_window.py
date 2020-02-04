@@ -153,8 +153,7 @@ class FindAndReplaceWindow(Gtk.Window):
     # Other functions / procedures. Keep them alphabeticaly sorted
     #
     def find_and_select(self, direction):
-        selected_text_matching, keyword, x, _buffer, selection_bounds = \
-            self.match_parent_selected_text()
+        x, keyword, y, _buffer, selection_bounds = self.match_parent_selected_text()
         search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
         cursor_iter = Gtk.TextIter()
         found = False
@@ -162,7 +161,7 @@ class FindAndReplaceWindow(Gtk.Window):
         icon = ""
         label = ""
 
-        if selected_text_matching:
+        if selection_bounds:
             if direction == Direction.FORWARD:
                 cursor_iter = selection_bounds[1]
             elif direction == Direction.BACKWARD:
