@@ -56,7 +56,10 @@ class FindAndReplaceWindow(Gtk.Window):
 
     # Null objects. Keep them alphabeticaly sorted
     parent = Gtk.ApplicationWindow()
+
+    # Other variables. Keep them alphabeticaly sorted
     whole_word_last_active = False
+    search_flag = Gtk.TextSearchFlags.CASE_INSENSITIVE
 
     # Properties' storage. Keep them alphabeticaly sorted
     _replace_mode = True
@@ -82,7 +85,8 @@ class FindAndReplaceWindow(Gtk.Window):
         self.menubtn_use_similarity_srch.set_sensitive(False)
 
         # Init widgets
-        parent_selected_text = self.match_parent_selected_text()[2]
+        parent_selected_text = \
+            self.match_parent_selected_text(self.search_flag)[2]
 
         if parent_selected_text:
             self.srchent_existing_text.set_text(parent_selected_text)
@@ -129,7 +133,8 @@ class FindAndReplaceWindow(Gtk.Window):
     # alphabeticaly sorted
     #
     def refresh_match_integration(self):
-        matching, keyword = self.match_parent_selected_text()[0:2]
+        matching, keyword = \
+            self.match_parent_selected_text(self.search_flag)[0:2]
         widget = self.stk_find_or_replace
 
         widget.set_sensitive(keyword != "")
@@ -153,15 +158,16 @@ class FindAndReplaceWindow(Gtk.Window):
     # Other functions / procedures. Keep them alphabeticaly sorted
     #
     def find_and_select(self, direction):
-        x, keyword, y, _buffer, selection_bounds = self.match_parent_selected_text()
-        search_options = keyword, Gtk.TextSearchFlags.CASE_INSENSITIVE, None
+        selected_text_matching, keyword, y, _buffer, selection_bounds = \
+            self.match_parent_selected_text(self.search_flag)
+        search_options = keyword, self.search_flag, None
         cursor_iter = Gtk.TextIter()
         found = False
         match = None
         icon = ""
         label = ""
 
-        if selection_bounds:
+        if selected_text_matching:
             if direction == Direction.FORWARD:
                 cursor_iter = selection_bounds[1]
             elif direction == Direction.BACKWARD:
@@ -203,18 +209,21 @@ class FindAndReplaceWindow(Gtk.Window):
                 icon, Gtk.IconSize.LARGE_TOOLBAR)
             self.rvlr_search_notif.set_reveal_child(True)
 
-    def match_parent_selected_text(self):
+    def match_parent_selected_text(self, flag):
         _buffer = self.parent.textbuffer_buffer
         selection_bounds = _buffer.get_selection_bounds()
         selected_text = ""
         keyword = self.srchent_existing_text.get_text()
         matching = False
 
-        if selection_bounds:
+        if selection_bounds and keyword:
             selected_text = _buffer.get_text(*selection_bounds, True)
-            # Make sure that the keyword is not a null object, and compare it
-            # with the selected text
-            if keyword and selected_text == keyword:
+
+            if flag == Gtk.TextSearchFlags.CASE_INSENSITIVE:
+                keyword = keyword.lower()
+                selected_text = selected_text.lower()
+
+            if selected_text == keyword:
                 matching = True
 
         return matching, keyword, selected_text, _buffer, selection_bounds
@@ -236,7 +245,8 @@ class FindAndReplaceWindow(Gtk.Window):
 
     @GtkTemplate.Callback
     def on_btn_replace_clicked(self, widget):
-        matching, x, y, _buffer, z = self.match_parent_selected_text()
+        matching, x, y, _buffer, z = \
+            self.match_parent_selected_text(self.search_flag)
 
         if matching:
             _buffer.delete_selection(False, False)
