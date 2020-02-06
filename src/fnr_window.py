@@ -58,7 +58,6 @@ class FindAndReplaceWindow(Gtk.Window):
     parent = Gtk.ApplicationWindow()
 
     # Other variables. Keep them alphabeticaly sorted
-    whole_word_last_active = False
     search_flag = Gtk.TextSearchFlags.CASE_INSENSITIVE
 
     # Properties' storage. Keep them alphabeticaly sorted
@@ -267,13 +266,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
         self.chkbtn_use_similarity_srch.set_sensitive(not active)
         self.chkbtn_whole_word.set_sensitive(not active)
-        # Make sure chkbtn_whole_word active again after disabled if it was
-        # activated before this
-        if active:
-            self.whole_word_last_active = self.chkbtn_whole_word.get_active()
-            self.chkbtn_whole_word.set_active(False)
-        else:
-            self.chkbtn_whole_word.set_active(self.whole_word_last_active)
+        self.chkbtn_whole_word.set_inconsistent(active)
 
     @GtkTemplate.Callback
     def on_chkbtn_use_similarity_srch_toggled(self, widget):
