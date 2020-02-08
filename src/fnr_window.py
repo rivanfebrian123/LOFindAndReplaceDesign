@@ -36,17 +36,18 @@ class FindAndReplaceWindow(Gtk.Window):
     btn_find_or_replace_all = GtkTemplate.Child()
     btn_replace = GtkTemplate.Child()
     btn_skip = GtkTemplate.Child()
-    btnbox_find_or_replace_styles = GtkTemplate.Child()
+    btnbox_existing_text = GtkTemplate.Child()
+    btnbox_replace_with = GtkTemplate.Child()
     chkbtn_use_regex = GtkTemplate.Child()
     chkbtn_use_similarity_srch = GtkTemplate.Child()
     chkbtn_whole_word = GtkTemplate.Child()
     img_search_notif = GtkTemplate.Child()
     lbl_search_notif = GtkTemplate.Child()
-    menubtn_find_or_replace_styles = GtkTemplate.Child()
+    menubtn_existing_text = GtkTemplate.Child()
+    menubtn_replace_with = GtkTemplate.Child()
     menubtn_sound_like = GtkTemplate.Child()
     menubtn_use_similarity_srch = GtkTemplate.Child()
-    rvlr_options = GtkTemplate.Child()
-    rvlr_find_or_replace_styles = GtkTemplate.Child()
+    rvlr_advanced_options = GtkTemplate.Child()
     rvlr_replace_with = GtkTemplate.Child()
     rvlr_search_notif = GtkTemplate.Child()
     stk_find_or_replace = GtkTemplate.Child()
@@ -78,8 +79,8 @@ class FindAndReplaceWindow(Gtk.Window):
 
         # We've to set these properties manually because GtkTemplate
         # doesn't do it well. Keep them alphabeticaly sorted
-        self.btnbox_find_or_replace_styles.set_homogeneous(False)
-        self.menubtn_find_or_replace_styles.set_sensitive(False)
+        self.btnbox_existing_text.set_homogeneous(False)
+        self.btnbox_replace_with.set_homogeneous(False)
         self.menubtn_sound_like.set_sensitive(False)
         self.menubtn_use_similarity_srch.set_sensitive(False)
 
@@ -102,8 +103,9 @@ class FindAndReplaceWindow(Gtk.Window):
         self._advanced_mode = value
 
         # Refresh the integrations
-        self.rvlr_options.set_reveal_child(value)
-        self.refresh_replace_mode_integration()
+        self.rvlr_advanced_options.set_reveal_child(value)
+        self.menubtn_existing_text.set_visible(value)
+        self.menubtn_replace_with.set_visible(value)
 
     # Replace Mode property
     def get_replace_mode(self):
@@ -125,7 +127,6 @@ class FindAndReplaceWindow(Gtk.Window):
             stylectx.remove_class("destructive-action")
             widget.set_label("Find All")
         self.refresh_match_integration()
-        self.refresh_replace_mode_integration()
 
     #---------------------------------------------
     # Integration refreshment functions / procedures. Keep them
@@ -144,14 +145,6 @@ class FindAndReplaceWindow(Gtk.Window):
                 widget.set_visible_child_name("main_act")
         else:
             widget.set_visible_child_name("main_act")
-
-    def refresh_replace_mode_integration(self):
-        widget = self.rvlr_find_or_replace_styles
-
-        if self.get_advanced_mode():
-            widget.set_reveal_child(self.get_replace_mode())
-        else:
-            widget.set_reveal_child(False)
 
     #-----------------------------------
     # Other functions / procedures. Keep them alphabeticaly sorted
@@ -274,10 +267,6 @@ class FindAndReplaceWindow(Gtk.Window):
 
         self.menubtn_use_similarity_srch.set_sensitive(active)
         self.chkbtn_use_regex.set_sensitive(not active)
-
-    @GtkTemplate.Callback
-    def on_tglbtn_find_or_replace_styles_toggled(self, widget):
-        self.menubtn_find_or_replace_styles.set_sensitive(widget.get_active())
 
     @GtkTemplate.Callback
     def on_tglbtn_replace_toggled(self, widget):
