@@ -20,7 +20,7 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk, Gio
+from gi.repository import Gtk, Gdk, Gio
 
 from .main_window import MainWindow
 
@@ -33,7 +33,15 @@ class Application(Gtk.Application):
     def do_activate(self):
         win = self.props.active_window
         if not win:
+            cssprvdr = Gtk.CssProvider()
+            cssprvdr.load_from_resource(
+                "/org/gnome/Lofindandreplacedesign/style.css")
+            stylectx = Gtk.StyleContext()
             win = MainWindow(application=self)
+
+            stylectx.add_provider_for_screen(
+                Gdk.Screen.get_default(), cssprvdr,
+                Gtk.STYLE_PROVIDER_PRIORITY_USER)
         win.present()
 
 

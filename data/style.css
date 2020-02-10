@@ -1,0 +1,19 @@
+/*
+@keyframes blinkky {
+  0% {opacity: 1;}
+  50% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.blink {
+  animation-name: blinkky;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-duration: 250ms;
+  animation-fill-mode: none;
+}
+*/
+
+flowboxchild {
+  border-radius: 12px;
+}
