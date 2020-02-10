@@ -1231,7 +1231,6 @@ Author: Muhammad Rivan Febrian
                             <property name="halign">start</property>
                             <property name="hexpand">True</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_chkbtn_whole_word_toggled" swapped="no"/>
                             <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
