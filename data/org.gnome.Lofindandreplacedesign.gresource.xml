@@ -2,7 +2,8 @@
 <gresources>
   <gresource prefix="/org/gnome/Lofindandreplacedesign">
     <file>style.css</file>
-    <file>main_window.ui</file>
-    <file>fnr_window.ui</file>
+    <file preprocess="xml-stripblanks">main_window.ui</file>
+    <file preprocess="xml-stripblanks">fnr_window.ui</file>
+    <file preprocess="xml-stripblanks">formatting_popup.ui</file>
   </gresource>
 </gresources>

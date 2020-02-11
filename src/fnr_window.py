@@ -74,7 +74,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
         # Set null variables
         self.parent = self.get_transient_for()
-        self.parent.textbuffer_buffer.connect(
+        self.parent_handler = self.parent.textbuffer_buffer.connect(
             "mark-set", self.on_parent_textbuffer_mark_set)
 
         # We've to set these properties manually because GtkTemplate
@@ -266,6 +266,10 @@ class FindAndReplaceWindow(Gtk.Window):
 
         self.menubtn_use_similarity_srch.set_sensitive(active)
         self.chkbtn_use_regex.set_sensitive(not active)
+
+    @GtkTemplate.Callback
+    def on_FindAndReplaceWindow_destroy(self, widget):
+        self.parent.textbuffer_buffer.disconnect(self.parent_handler)
 
     @GtkTemplate.Callback
     def on_tglbtn_replace_toggled(self, widget):

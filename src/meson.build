@@ -22,6 +22,7 @@ lofindandreplacedesign_sources = [
   'main.py',
   'main_window.py',
   'fnr_window.py',
+  'formatting_popup.py',
 ]
 
 install_data(lofindandreplacedesign_sources, install_dir: moduledir)
