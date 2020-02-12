@@ -212,9 +212,9 @@ class FindAndReplaceWindow(Gtk.Window):
             selected_text = _buffer.get_text(*selection_bounds, True)
             if keyword:
                 if flag == Gtk.TextSearchFlags.CASE_INSENSITIVE:
-                    keyword = keyword.lower()
-                    selected_text = selected_text.lower()
-                if selected_text == keyword:
+                    if selected_text.lower() == keyword.lower():
+                        matching = True
+                elif selected_text == keyword:
                     matching = True
 
         return matching, keyword, selected_text, _buffer, selection_bounds

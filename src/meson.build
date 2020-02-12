@@ -1,7 +1,3 @@
-pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
-moduledir = join_paths(pkgdatadir, 'lofindandreplacedesign')
-python3 = import('python3')
-
 conf = configuration_data()
 conf.set('PYTHON', python3.find_python().path())
 conf.set('VERSION', meson.project_version())
