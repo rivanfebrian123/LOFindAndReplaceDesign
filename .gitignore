@@ -1,5 +1,6 @@
 tags.*
 *.ui~
 #*#
+.fuse_hidden*
 /subproject
 !*.wrap
