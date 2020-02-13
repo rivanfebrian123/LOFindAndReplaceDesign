@@ -74,8 +74,8 @@ class FindAndReplaceWindow(Gtk.Window):
 
         # Set null variables
         self.parent = self.get_transient_for()
-        self.parent_handler = self.parent.textbuffer_buffer.connect(
-            "mark-set", self.on_parent_textbuffer_mark_set)
+        self.parent_handler = self.parent.txtbfr_buffer.connect(
+            "mark-set", self.on_parent_text_buffer_mark_set)
 
         # We've to set these properties manually because GtkTemplate
         # doesn't do it well. Keep them alphabeticaly sorted
@@ -202,7 +202,7 @@ class FindAndReplaceWindow(Gtk.Window):
             self.rvlr_search_notif.set_reveal_child(True)
 
     def match_parent_selected_text(self, flag):
-        _buffer = self.parent.textbuffer_buffer
+        _buffer = self.parent.txtbfr_buffer
         selection_bounds = _buffer.get_selection_bounds()
         selected_text = ""
         keyword = self.srchent_existing_text.get_text()
@@ -210,7 +210,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
         if selection_bounds:
             selected_text = _buffer.get_text(*selection_bounds, True)
-            if keyword:
+            if keyword:  # don't combine this "if" statement to the parent "if"
                 if flag == Gtk.TextSearchFlags.CASE_INSENSITIVE:
                     if selected_text.lower() == keyword.lower():
                         matching = True
@@ -269,13 +269,13 @@ class FindAndReplaceWindow(Gtk.Window):
 
     @GtkTemplate.Callback
     def on_FindAndReplaceWindow_destroy(self, widget):
-        self.parent.textbuffer_buffer.disconnect(self.parent_handler)
+        self.parent.txtbfr_buffer.disconnect(self.parent_handler)
 
     @GtkTemplate.Callback
     def on_tglbtn_replace_toggled(self, widget):
         self.set_replace_mode(widget.get_active())
 
-    def on_parent_textbuffer_mark_set(self, location, mark, widget):
+    def on_parent_text_buffer_mark_set(self, location, mark, widget):
         self.refresh_match_integration()
 
     @GtkTemplate.Callback

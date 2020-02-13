@@ -28,7 +28,7 @@ Author: Muhammad Rivan Febrian
   <!-- interface-name LibreOffice -->
   <!-- interface-copyright 2020 -->
   <!-- interface-authors Muhammad Rivan Febrian -->
-  <object class="GtkTextBuffer" id="textbuffer_buffer"/>
+  <object class="GtkTextBuffer" id="txtbfr_buffer"/>
   <template class="MainWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
     <property name="default_width">642</property>
@@ -36,7 +36,7 @@ Author: Muhammad Rivan Febrian
     <property name="icon_name">libreoffice</property>
     <property name="has_resize_grip">True</property>
     <child type="titlebar">
-      <object class="GtkStack" id="stk_headerbar">
+      <object class="GtkStack" id="stk_header">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="transition_duration">250</property>
@@ -70,7 +70,7 @@ Author: Muhammad Rivan Febrian
           </packing>
         </child>
         <child>
-          <object class="GtkHeaderBar" id="headerbar_fnr">
+          <object class="GtkHeaderBar" id="hdrbar_fnr">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="title" translatable="yes">My Something</property>
@@ -162,7 +162,7 @@ Author: Muhammad Rivan Febrian
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkFlowBox" id="flowbox_type">
+                          <object class="GtkFlowBox" id="flwbox_type">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="valign">start</property>
@@ -480,7 +480,7 @@ Author: Muhammad Rivan Febrian
             <property name="min_content_width">459</property>
             <property name="min_content_height">252</property>
             <child>
-              <object class="GtkTextView" id="textview_text">
+              <object class="GtkTextView" id="txtview_text">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="wrap_mode">word</property>
@@ -488,7 +488,7 @@ Author: Muhammad Rivan Febrian
                 <property name="right_margin">9</property>
                 <property name="top_margin">6</property>
                 <property name="bottom_margin">6</property>
-                <property name="buffer">textbuffer_buffer</property>
+                <property name="buffer">txtbfr_buffer</property>
               </object>
             </child>
           </object>
@@ -496,6 +496,70 @@ Author: Muhammad Rivan Febrian
             <property name="name">writer</property>
             <property name="title" translatable="yes">page0</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">30</property>
+            <property name="margin_right">30</property>
+            <property name="margin_top">30</property>
+            <property name="margin_bottom">30</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">15</property>
+            <child>
+              <object class="GtkImage" id="img_selection">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixel_size">192</property>
+                <property name="icon_name">libreoffice</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">For working Find and Replace example, just &lt;b&gt;go to Writer&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+                <style>
+                  <class name="dim-label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_go_to_writer">
+                <property name="label" translatable="yes">Go to Writer</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <signal name="clicked" handler="on_btn_go_to_writer_clicked" swapped="no"/>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="name">nothing</property>
+            <property name="title" translatable="yes">page0</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

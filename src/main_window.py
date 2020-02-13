@@ -29,15 +29,20 @@ class MainWindow(Gtk.ApplicationWindow):
     # Child widgets. Keep them alphabeticaly sorted
     btn_create = GtkTemplate.Child()
     btn_find_and_replace = GtkTemplate.Child()
-    flowbox_type = GtkTemplate.Child()
-    headerbar_fnr = GtkTemplate.Child()
+    btn_go_to_writer = GtkTemplate.Child()
+    flwbox_type = GtkTemplate.Child()
+    hdrbar_fnr = GtkTemplate.Child()
+    img_selection = GtkTemplate.Child()
     stk_content = GtkTemplate.Child()
-    stk_headerbar = GtkTemplate.Child()
-    textview_text = GtkTemplate.Child()
-    textbuffer_buffer = GtkTemplate.Child()
+    stk_header = GtkTemplate.Child()
+    txtview_text = GtkTemplate.Child()
+    txtbfr_buffer = GtkTemplate.Child()
 
     # Null objects. Keep them alphabeticaly sorted
     fnr_window = None
+
+    # Properties' storage. Keep them alphabeticaly sorted
+    _visible_sub_app = ""
 
     #---------------------------------
     # The init function
@@ -47,33 +52,51 @@ class MainWindow(Gtk.ApplicationWindow):
         self.init_template()
 
         # Cursor iter should be placed correctly
-        self.textbuffer_buffer.place_cursor(
-            self.textbuffer_buffer.get_start_iter())
+        self.txtbfr_buffer.place_cursor(self.txtbfr_buffer.get_start_iter())
+
+    #-----------------------------------
+    # Properties. Keep them alphabeticaly sorted
+    #
+    # Visible Sub App property
+    def get_visible_sub_app(self):
+        return self._visible_sub_app
+
+    def set_visible_sub_app(self, value):
+        self._visible_sub_app = value
+
+        header_title = ""
+
+        if value == "greeter":
+            self.stk_header.set_visible_child_name("greeter")
+            self.stk_content.set_visible_child_name("greeter")
+        else:
+            if value == "writer":
+                header_title = "My Awesome Journal"
+                self.stk_content.set_visible_child_name("writer")
+            else:
+                if value == "calc":
+                    header_title = "My Amazing Spreadsheet"
+                elif value == "impress":
+                    header_title = "My Friendly Presentation"
+                elif value == "draw":
+                    header_title = "My Elegant Design"
+                elif value == "math":
+                    header_title = "My Number One Math Formula"
+                elif value == "base":
+                    header_title = "My Website Database"
+                self.img_selection.set_from_icon_name(
+                    "libreoffice-" + value, 192)
+                self.stk_content.set_visible_child_name("nothing")
+            self.hdrbar_fnr.set_title(header_title)
+            self.stk_header.set_visible_child_name("fnr")
 
     #--------------------------------------
     # Callbacks functions / procedures. Keep them alphabeticaly sorted
     #
     @GtkTemplate.Callback
     def on_btn_create_clicked(self, widget):
-        child_name = self.flowbox_type.get_selected_children()[0].get_name()
-        header_title = ""
-
-        if child_name == "writer":
-            header_title = "My Awesome Journal"
-        elif child_name == "calc":
-            header_title = "My Amazing Spreadsheet"
-        elif child_name == "impress":
-            header_title = "My Friendly Presentation"
-        elif child_name == "draw":
-            header_title = "My Elegant Design"
-        elif child_name == "math":
-            header_title = "My Number One Math Formula"
-        elif child_name == "base":
-            header_title = "My Website Database"
-
-        self.headerbar_fnr.set_title(header_title)
-        self.stk_headerbar.set_visible_child_name("fnr")
-        self.stk_content.set_visible_child_name(child_name)
+        child_name = self.flwbox_type.get_selected_children()[0].get_name()
+        self.set_visible_sub_app(child_name)
 
     @GtkTemplate.Callback
     def on_btn_find_and_replace_clicked(self, widget):
@@ -84,9 +107,12 @@ class MainWindow(Gtk.ApplicationWindow):
         self.fnr_window.present()
 
     @GtkTemplate.Callback
+    def on_btn_go_to_writer_clicked(self, widget):
+        self.set_visible_sub_app("writer")
+
+    @GtkTemplate.Callback
     def on_btn_new_document_clicked(self, widget):
-        self.stk_headerbar.set_visible_child_name("greeter")
-        self.stk_content.set_visible_child_name("greeter")
+        self.set_visible_sub_app("greeter")
 
     def on_fnr_window_destroy(self, widget):
         self.fnr_window = None
