@@ -3,6 +3,8 @@ conf.set('PYTHON', python3.find_python().path())
 conf.set('VERSION', meson.project_version())
 conf.set('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('pkgdatadir', pkgdatadir)
+conf.set('pkglibdir', pkglibdir)
+conf.set('pkggirdir', pkggirdir)
 
 configure_file(
   input: 'lofindandreplacedesign.in',

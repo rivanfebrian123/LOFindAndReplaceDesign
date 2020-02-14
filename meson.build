@@ -5,14 +5,15 @@ project('lofindandreplacedesign', version: '0.1.0',
 pkglibdir = join_paths(get_option('prefix'), get_option('libdir'), meson.project_name())
 datadir = get_option('datadir')
 pkgdatadir = join_paths(get_option('prefix'), datadir, meson.project_name())
+pkggirdir = join_paths(pkglibdir, 'girepository-1.0')
 moduledir = join_paths(pkgdatadir, 'lofindandreplacedesign')
 
 gnome = import('gnome')
 python3 = import('python3')
 i18n = import('i18n')
 
-gtk = dependency('gtk+-3.0', version: '>= 3.20')
 gir = dependency('gobject-introspection-1.0', version: '>= 1.0')
+gtk = dependency('gtk+-3.0', version: '>= 3.20')
 libgd = subproject('libgd',
   default_options: [
     'pkglibdir=' + pkglibdir,

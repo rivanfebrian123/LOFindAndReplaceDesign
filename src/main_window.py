@@ -40,6 +40,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
     # Null objects. Keep them alphabeticaly sorted
     fnr_window = None
+    selected_child_name = ""
 
     # Properties' storage. Keep them alphabeticaly sorted
     _visible_sub_app = ""
@@ -66,6 +67,8 @@ class MainWindow(Gtk.ApplicationWindow):
 
         header_title = ""
 
+        if self.fnr_window:
+            self.fnr_window.destroy()
         if value == "greeter":
             self.stk_header.set_visible_child_name("greeter")
             self.stk_content.set_visible_child_name("greeter")
@@ -80,10 +83,6 @@ class MainWindow(Gtk.ApplicationWindow):
                     header_title = "My Friendly Presentation"
                 elif value == "draw":
                     header_title = "My Elegant Design"
-                elif value == "math":
-                    header_title = "My Number One Math Formula"
-                elif value == "base":
-                    header_title = "My Website Database"
                 self.img_selection.set_from_icon_name(
                     "libreoffice-" + value, 192)
                 self.stk_content.set_visible_child_name("nothing")
@@ -95,8 +94,7 @@ class MainWindow(Gtk.ApplicationWindow):
     #
     @GtkTemplate.Callback
     def on_btn_create_clicked(self, widget):
-        child_name = self.flwbox_type.get_selected_children()[0].get_name()
-        self.set_visible_sub_app(child_name)
+        self.set_visible_sub_app(self.selected_child_name)
 
     @GtkTemplate.Callback
     def on_btn_find_and_replace_clicked(self, widget):
@@ -113,6 +111,15 @@ class MainWindow(Gtk.ApplicationWindow):
     @GtkTemplate.Callback
     def on_btn_new_document_clicked(self, widget):
         self.set_visible_sub_app("greeter")
+
+    @GtkTemplate.Callback
+    def on_flwbox_type_selected_children_changed(self, widget):
+        child = self.flwbox_type.get_selected_children()[0]
+        active = child.get_sensitive()
+
+        if active:
+            self.selected_child_name = child.get_name()
+        self.btn_create.set_sensitive(active)
 
     def on_fnr_window_destroy(self, widget):
         self.fnr_window = None
