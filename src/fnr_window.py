@@ -17,7 +17,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Gd
 from .gi_composites import GtkTemplate
 
 
@@ -31,7 +31,7 @@ class Direction():
 class FindAndReplaceWindow(Gtk.Window):
     __gtype_name__ = "FindAndReplaceWindow"
 
-    # Child widgets. Keep them alphabeticaly sorted
+    # Child widgets. Keep them alphabetically sorted
     btn_find_previous = GtkTemplate.Child()
     btn_find_or_replace_all = GtkTemplate.Child()
     btn_replace = GtkTemplate.Child()
@@ -51,17 +51,22 @@ class FindAndReplaceWindow(Gtk.Window):
     rvlr_replace_with = GtkTemplate.Child()
     rvlr_search_notif = GtkTemplate.Child()
     stk_find_or_replace = GtkTemplate.Child()
-    srchent_existing_text = GtkTemplate.Child()
-    srchent_replace_with = GtkTemplate.Child()
     tglbtn_replace = GtkTemplate.Child()
 
-    # Null objects. Keep them alphabeticaly sorted
+    # Custom non-buildable widgets
+    tagent_existing_text = Gd.TaggedEntry()
+    tagent_replace_with = Gd.TaggedEntry()
+
+    # Null objects. Keep them alphabetically sorted
+    #
+    # Don't forget to disconnect all the external widget signals
+    # on this object destroy
     parent = Gtk.ApplicationWindow()
 
-    # Other variables. Keep them alphabeticaly sorted
+    # Other variables. Keep them alphabetically sorted
     search_flag = Gtk.TextSearchFlags.CASE_INSENSITIVE
 
-    # Properties' storage. Keep them alphabeticaly sorted
+    # Properties' storage. Keep them alphabetically sorted
     _replace_mode = True
     _advanced_mode = False
 
@@ -78,7 +83,7 @@ class FindAndReplaceWindow(Gtk.Window):
             "mark-set", self.on_parent_text_buffer_mark_set)
 
         # We've to set these properties manually because GtkTemplate
-        # doesn't do it well. Keep them alphabeticaly sorted
+        # doesn't do it well. Keep them alphabetically sorted
         self.btnbox_existing_text.set_homogeneous(False)
         self.btnbox_replace_with.set_homogeneous(False)
         self.menubtn_sound_like.set_sensitive(False)
@@ -89,10 +94,24 @@ class FindAndReplaceWindow(Gtk.Window):
             self.match_parent_selected_text(self.search_flag)[2]
 
         if parent_selected_text:
-            self.srchent_existing_text.set_text(parent_selected_text)
+            self.tagent_existing_text.set_text(parent_selected_text)
+
+        # Init custom widgets. Keep in mind that we don't use "show_all()"
+        # since it can break the GTK Template "visible" property
+        self.btnbox_existing_text.pack_start(
+            self.tagent_existing_text, True, True, 0)
+        self.tagent_existing_text.connect(
+            "changed", self.on_tagent_existing_text_changed)
+        self.tagent_existing_text.show()
+
+        self.btnbox_replace_with.pack_start(
+            self.tagent_replace_with, True, True, 0)
+        self.tagent_replace_with.set_icon_from_icon_name(
+            Gtk.EntryIconPosition.PRIMARY, "edit-find-replace-symbolic")
+        self.tagent_replace_with.show()
 
     #-----------------------------------
-    # Properties. Keep them alphabeticaly sorted
+    # Properties. Keep them alphabetically sorted
     #
     # Advanced Mode property
     def get_advanced_mode(self):
@@ -130,7 +149,7 @@ class FindAndReplaceWindow(Gtk.Window):
 
     #---------------------------------------------
     # Integration refreshment functions / procedures. Keep them
-    # alphabeticaly sorted
+    # alphabetically sorted
     #
     def refresh_match_integration(self):
         matching, keyword = \
@@ -147,7 +166,7 @@ class FindAndReplaceWindow(Gtk.Window):
             widget.set_visible_child_name("main_act")
 
     #-----------------------------------
-    # Other functions / procedures. Keep them alphabeticaly sorted
+    # Other functions / procedures. Keep them alphabetically sorted
     #
     def find_and_select(self, direction):
         selected_text_matching, keyword, y, _buffer, selection_bounds = \
@@ -205,12 +224,12 @@ class FindAndReplaceWindow(Gtk.Window):
         _buffer = self.parent.txtbfr_buffer
         selection_bounds = _buffer.get_selection_bounds()
         selected_text = ""
-        keyword = self.srchent_existing_text.get_text()
+        keyword = self.tagent_existing_text.get_text()
         matching = False
 
         if selection_bounds:
             selected_text = _buffer.get_text(*selection_bounds, True)
-            if keyword:  # don't combine this "if" statement to the parent "if"
+            if keyword:  # don't merge this "if" statement to the parent "if"
                 if flag == Gtk.TextSearchFlags.CASE_INSENSITIVE:
                     if selected_text.lower() == keyword.lower():
                         matching = True
@@ -220,7 +239,7 @@ class FindAndReplaceWindow(Gtk.Window):
         return matching, keyword, selected_text, _buffer, selection_bounds
 
     #--------------------------------------
-    # Callbacks functions / procedures. Keep them alphabeticaly sorted
+    # Callbacks functions / procedures. Keep them alphabetically sorted
     #
     @GtkTemplate.Callback
     def on_btn_close_search_notif_clicked(self, widget):
@@ -228,10 +247,12 @@ class FindAndReplaceWindow(Gtk.Window):
 
     @GtkTemplate.Callback
     def on_btn_find_next_clicked(self, widget):
+        self.rvlr_search_notif.set_reveal_child(False)
         self.find_and_select(Direction.FORWARD)
 
     @GtkTemplate.Callback
     def on_btn_find_previous_clicked(self, widget):
+        self.rvlr_search_notif.set_reveal_child(False)
         self.find_and_select(Direction.BACKWARD)
 
     @GtkTemplate.Callback
@@ -239,13 +260,15 @@ class FindAndReplaceWindow(Gtk.Window):
         matching, x, y, _buffer, z = \
             self.match_parent_selected_text(self.search_flag)
 
+        self.rvlr_search_notif.set_reveal_child(False)
         if matching:
             _buffer.delete_selection(False, False)
-            _buffer.insert_at_cursor(self.srchent_replace_with.get_text(), -1)
+            _buffer.insert_at_cursor(self.tagent_replace_with.get_text(), -1)
         self.stk_find_or_replace.set_visible_child_name("main_act")
 
     @GtkTemplate.Callback
     def on_btn_skip_clicked(self, widget):
+        self.rvlr_search_notif.set_reveal_child(False)
         self.stk_find_or_replace.set_visible_child_name("main_act")
 
     @GtkTemplate.Callback
@@ -283,5 +306,5 @@ class FindAndReplaceWindow(Gtk.Window):
         self.set_advanced_mode(widget.get_name() == "advanced_mode")
 
     @GtkTemplate.Callback
-    def on_srchent_existing_text_changed(self, widget):
+    def on_tagent_existing_text_changed(self, widget):
         self.refresh_match_integration()

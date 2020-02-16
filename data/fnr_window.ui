@@ -660,83 +660,6 @@ Author: Muhammad Rivan Febrian
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="liststr_existing_text">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">google</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">gnome</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">apple</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">telegram</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">youtube</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">twitter</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">facebook</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">friendster</col>
-      </row>
-    </data>
-  </object>
-  <object class="GtkEntryCompletion" id="entcmplt_existing_text">
-    <property name="model">liststr_existing_text</property>
-    <property name="minimum_key_length">0</property>
-    <property name="text_column">0</property>
-    <child>
-      <object class="GtkCellRendererText"/>
-      <attributes>
-        <attribute name="text">0</attribute>
-      </attributes>
-    </child>
-  </object>
-  <object class="GtkListStore" id="liststr_replace_with">
-    <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">apple</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">grape</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">pineapple</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">jackfruit</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">dragonfruit</col>
-      </row>
-    </data>
-  </object>
-  <object class="GtkEntryCompletion" id="entcmplt_replace_with">
-    <property name="model">liststr_replace_with</property>
-    <property name="minimum_key_length">0</property>
-    <property name="text_column">0</property>
-    <child>
-      <object class="GtkCellRendererText"/>
-      <attributes>
-        <attribute name="text">0</attribute>
-      </attributes>
-    </child>
-  </object>
   <template class="FindAndReplaceWindow" parent="GtkWindow">
     <property name="can_focus">False</property>
     <property name="resizable">False</property>
@@ -975,23 +898,6 @@ Author: Muhammad Rivan Febrian
                     <property name="can_focus">False</property>
                     <property name="layout_style">expand</property>
                     <child>
-                      <object class="GtkSearchEntry" id="srchent_existing_text">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="primary_icon_name">edit-find-symbolic</property>
-                        <property name="primary_icon_activatable">False</property>
-                        <property name="primary_icon_sensitive">False</property>
-                        <property name="completion">entcmplt_existing_text</property>
-                        <signal name="changed" handler="on_srchent_existing_text_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                        <property name="non_homogeneous">True</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkMenuButton" id="menubtn_existing_text">
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -1006,9 +912,13 @@ Author: Muhammad Rivan Febrian
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">0</property>
                         <property name="non_homogeneous">True</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -1059,22 +969,6 @@ Author: Muhammad Rivan Febrian
                         <property name="can_focus">False</property>
                         <property name="layout_style">expand</property>
                         <child>
-                          <object class="GtkSearchEntry" id="srchent_replace_with">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="primary_icon_name">edit-find-replace-symbolic</property>
-                            <property name="primary_icon_activatable">False</property>
-                            <property name="primary_icon_sensitive">False</property>
-                            <property name="completion">entcmplt_replace_with</property>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                            <property name="non_homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkMenuButton" id="menubtn_replace_with">
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
@@ -1089,9 +983,13 @@ Author: Muhammad Rivan Febrian
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">1</property>
+                            <property name="pack_type">end</property>
+                            <property name="position">0</property>
                             <property name="non_homogeneous">True</property>
                           </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -1519,5 +1417,82 @@ Author: Muhammad Rivan Febrian
       <widget name="lbl_existing_text"/>
       <widget name="lbl_replace_with"/>
     </widgets>
+  </object>
+  <object class="GtkListStore" id="liststr_existing_text">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">google</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">gnome</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">apple</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">telegram</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">youtube</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">twitter</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">facebook</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">friendster</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkEntryCompletion" id="entcmplt_existing_text">
+    <property name="model">liststr_existing_text</property>
+    <property name="minimum_key_length">0</property>
+    <property name="text_column">0</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
+  </object>
+  <object class="GtkListStore" id="liststr_replace_with">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">apple</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">grape</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">pineapple</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">jackfruit</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">dragonfruit</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkEntryCompletion" id="entcmplt_replace_with">
+    <property name="model">liststr_replace_with</property>
+    <property name="minimum_key_length">0</property>
+    <property name="text_column">0</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
   </object>
 </interface>

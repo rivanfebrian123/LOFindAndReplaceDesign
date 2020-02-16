@@ -26,7 +26,7 @@ from .fnr_window import FindAndReplaceWindow
 class MainWindow(Gtk.ApplicationWindow):
     __gtype_name__ = "MainWindow"
 
-    # Child widgets. Keep them alphabeticaly sorted
+    # Child widgets. Keep them alphabetically sorted
     btn_create = GtkTemplate.Child()
     btn_find_and_replace = GtkTemplate.Child()
     btn_go_to_writer = GtkTemplate.Child()
@@ -38,11 +38,11 @@ class MainWindow(Gtk.ApplicationWindow):
     txtview_text = GtkTemplate.Child()
     txtbfr_buffer = GtkTemplate.Child()
 
-    # Null objects. Keep them alphabeticaly sorted
+    # Null objects. Keep them alphabetically sorted
     fnr_window = None
     selected_child_name = ""
 
-    # Properties' storage. Keep them alphabeticaly sorted
+    # Properties' storage. Keep them alphabetically sorted
     _visible_sub_app = ""
 
     #---------------------------------
@@ -56,7 +56,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.txtbfr_buffer.place_cursor(self.txtbfr_buffer.get_start_iter())
 
     #-----------------------------------
-    # Properties. Keep them alphabeticaly sorted
+    # Properties. Keep them alphabetically sorted
     #
     # Visible Sub App property
     def get_visible_sub_app(self):
@@ -90,7 +90,7 @@ class MainWindow(Gtk.ApplicationWindow):
             self.stk_header.set_visible_child_name("fnr")
 
     #--------------------------------------
-    # Callbacks functions / procedures. Keep them alphabeticaly sorted
+    # Callbacks functions / procedures. Keep them alphabetically sorted
     #
     @GtkTemplate.Callback
     def on_btn_create_clicked(self, widget):
